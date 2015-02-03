@@ -1,0 +1,169 @@
+<?php
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+function uuhc_database_install()
+{	
+	global $wpdb;
+	//create uuhc table
+	$uuhccourses = "{$wpdb->prefix}uuhccourses";
+	
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	
+	$sql = "CREATE TABLE IF NOT EXISTS $uuhccourses (
+		`course_id`       BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+		`user_id`         BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+		`name`            VARCHAR(45) NOT NULL DEFAULT '',
+		`description`     TEXT NULL,
+		`mark`            INT NULL,
+		`is_participant`  BOOLEAN NOT NULL DEFAULT TRUE,
+		PRIMARY KEY (`course_id`),
+		KEY (`user_id`)
+	) ENGINE = InnoDB DEFAULT CHARSET = utf8 AUTO_INCREMENT = 1 ;";
+	dbDelta( $sql );
+}
+
+function uuhc_database_delete_usos_events($user_id)
+{
+	/*global $wpdb;
+	$uuhcevents = "{$wpdb->prefix}uuhcevents";
+	$uuhctimes = "{$wpdb->prefix}uuhctimes";
+	
+	$event_atts = array(
+		'source' => 'usos',
+		'user_id' => $user_id
+		);
+		
+	$events_where = uuhc_database_get_where($event_atts) ;
+	//$times_where = uuhc_database_get_where($time_atts);
+	//$select =  uuhc_database_get_select($select_atts);
+	
+	$wpdb->query( "DELETE FROM $uuhctimes WHERE event_id IN (SELECT event_id FROM $uuhcevents $events_where)");
+	$wpdb->query( "DELETE FROM $uuhcevents $events_where");
+
+	/*	$wpdb->query( "DELETE FROM $uuhctimes WHERE event_id IN (SELECT event_id FROM $uuhcevents WHERE source='usos' AND user_id=$user_id)");
+	$wpdb->query( "DELETE FROM $uuhcevents WHERE source='usos' AND user_id=$user_id");*/
+}
+
+function uuhc_database_add_event($event, $times)
+{
+	/*global $wpdb;
+	$uuhcevents = "{$wpdb->prefix}uuhcevents";
+	$uuhctimes = "{$wpdb->prefix}uuhctimes";
+	echo "</br>KOLASA";
+	print_r($times);
+	echo "</br>ASALOK</br>";
+	$wpdb->query( "INSERT INTO $uuhcevents (user_id, title, description, source) VALUES (".$event['user_id'].",'".$event['title']."','".$event['description']."','".$event['source']."')" );
+	$event_id = $wpdb->insert_id;
+	echo "</br>$event_id</br>";
+	foreach( $times as $key => $time )
+	{	
+		echo "</br>foreach</br>";
+		echo "INSERT INTO $uuhctimes (event_id, date, day_of_week, start_hour, end_hour) VALUES (".$event_id.",'".$time['date']."',".$time['day_of_week'].",'".$time['start_hour']."','".$time['end_hour']."')</br>";
+		$wpdb->query( "INSERT INTO $uuhctimes (event_id, date, day_of_week, start_hour, end_hour) VALUES (".$event_id.",'".$time['date']."',".$time['day_of_week'].",'".$time['start_hour']."','".$time['end_hour']."')" );
+	}*/
+}
+
+function uuhc_database_get_day_events($date, $user_id, $select_atts = NULL)
+{
+	/*global $wpdb;
+	$uuhcevents = "{$wpdb->prefix}uuhcevents";
+	$uuhctimes = "{$wpdb->prefix}uuhctimes";
+
+	$event_atts = array(
+		'user_id' => $user_id
+	);
+	$time_atts = array(
+		'date' => $date
+	);
+
+	/*$events = $wpdb->get_results( "SELECT start_hour, end_hour, title, description 
+	FROM 
+	(SELECT * FROM $uuhctimes WHERE date='$date') AS times 
+	INNER JOIN 
+	(SELECT * FROM $uuhcevents WHERE user_id=$user_id) AS events 
+	ON 
+	times.event_id=events.event_id ORDER BY start_hour");
+	*/
+	//return uuhc_database_get_events($event_atts, $time_atts, $select_atts);
+}
+
+function uuhc_database_delete_events($event_atts = NULL)
+{
+	/*global $wpdb;
+	$uuhcevents = "{$wpdb->prefix}uuhcevents";
+	$uuhctimes = "{$wpdb->prefix}uuhctimes";
+	
+	$events_where = uuhc_database_get_where($event_atts) ;
+	$times_where = uuhc_database_get_where($time_atts);
+	$select =  uuhc_database_get_select($select_atts);
+	
+	$wpdb->query( "DELETE FROM $uuhctimes WHERE event_id IN (SELECT event_id FROM $uuhcevents $events_where)");*/
+	$wpdb->query( "DELETE FROM $uuhcevents $events_where");
+}
+
+function uuhc_database_get_events($event_atts = NULL, $time_atts = NULL, $select_atts = NULL)
+{
+	/*global $wpdb;
+	$uuhcevents = "{$wpdb->prefix}uuhcevents";
+	$uuhctimes = "{$wpdb->prefix}uuhctimes";
+	
+	$events_where = uuhc_database_get_where($event_atts) ;
+	$times_where = uuhc_database_get_where($time_atts);
+	$select =  uuhc_database_get_select($select_atts);
+	
+	$events = $wpdb->get_results( "SELECT $select
+	FROM 
+	(SELECT * FROM $uuhctimes $times_where) AS times 
+	INNER JOIN 
+	(SELECT * FROM $uuhcevents $events_where) AS events 
+	ON 
+	times.event_id=events.event_id ORDER BY date, start_hour" );
+	
+	return $events;*/
+}
+
+function uuhc_database_get_where($atts) 
+{
+// 	$where = '';
+// 	foreach ($atts as $key => $value)
+// 	{
+// 		$where = $where." $key='$value' AND";
+// 	}
+// 	if (! $where == '') 
+// 	{
+// 		$where = substr($where, 0, -3);
+// 		$where = ' WHERE'.$where;
+// 	}
+// 	return $where;
+}
+
+function uuhc_database_get_select($atts)
+{
+// 	$select = '';
+// 	foreach ($atts as $key => $value)
+// 	{
+// 		if ($value)
+// 			$select = $select." $key,";
+// 	}
+// 	if ($select == '')
+// 		$select = '*';
+// 	else
+// 		$select = rtrim($select, ",");
+// 	return $select;
+}
+
+// function uuhc_usos_user($user_id)
+// {
+// // 	global $wpdb;
+// // 	$wslusersprofiles = "{$wpdb->prefix}wslusersprofiles";
+// // 	$result = $wpdb->get_results( "SELECT EXISTS (SELECT user_id FROM $wslusersprofiles WHERE user_id=$user_id) AS usos_user");
+// // 	return $result[0]->usos_user;
+// }
+
+function uuhc_database_uninstall()
+{
+	global $wpdb;
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}uuhccourses" );	
+}

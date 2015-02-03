@@ -1,0 +1,8 @@
+<?php
+
+function uuh_menu_page_callback() {
+	echo "Hello world!";
+	wp_widgets_add_menu();
+}
+
+?>

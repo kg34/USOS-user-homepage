@@ -1,0 +1,9 @@
+Wtyczka USOS user homepage
+Autor Klaudia Grygoruk
+
+Wtyczka pozwala na użycie shortcodów:
+1. [uuh-schedule] - wyświetla plan użytkownika
+2. [uuh-grades] - wyświetla oceny użytkownika
+3. [uuh-courses] - wyświetla aktualne przedmioty użytkownika
+4. [uuh-employment] - wyświetla zatrudnienie i praktyki użytkownika
+5. [uuh-projects] - wyświetla projekty użytkownika

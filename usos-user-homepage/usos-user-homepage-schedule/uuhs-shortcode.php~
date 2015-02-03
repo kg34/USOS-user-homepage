@@ -1,0 +1,22 @@
+<?php
+
+function uuhs_shortcode_function($atts) {
+
+	$atts = shortcode_atts(array(
+		'description' => true,
+		'date' => true,
+		'day_of_week' => true,
+		'start_hour' => true,
+		'end_hour' => true
+	), $atts);
+
+	global $wpdb;
+	$results = $wpdb->get_results( 'SELECT * FROM wp_options WHERE option_id = 1', OBJECT );
+	return print_r($results);
+
+	//return $atts['styl'];
+}
+
+
+add_shortcode('uuh_schedule', 'uuhs_shortcode_function');
+?>
