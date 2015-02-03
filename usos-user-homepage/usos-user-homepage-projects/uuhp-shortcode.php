@@ -27,7 +27,7 @@ function uuhp_shortcode_function($atts) {
 	$output = '<table class="form-table editcomment"><tr><h2>Projects</h2></tr>';
 	foreach ( $projects as $project ) {
 			$line = '';
-			foreach ( $emp as $value ) {
+			foreach ( $project as $value ) {
 				$line = $line.'<td>'.$value.'</td>';
 			}
 			$output = $output.'<tr>'.$line.'</tr>';
