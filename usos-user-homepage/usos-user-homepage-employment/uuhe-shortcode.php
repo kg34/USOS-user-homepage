@@ -26,7 +26,7 @@ function uuhe_shortcode_function($atts) {
 		return $atts['visitors_info'];
 		
 	$employment = uuhe_database_get_user_employment($user_id, $select_atts);
-	$output = '<table class="form-table editcomment"><tr><h2>Eployment</h2></tr>';
+	$output = '<table class="form-table editcomment"><tr><h2>Employment</h2></tr>';
 	foreach ( $employment as $emp ) {
 			$line = '';
 			$emp['start_date'] = 'from '.$emp['start_date'];
