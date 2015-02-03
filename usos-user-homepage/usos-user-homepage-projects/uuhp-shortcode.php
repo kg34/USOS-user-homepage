@@ -24,7 +24,7 @@ function uuhp_shortcode_function($atts) {
 		return $atts['visitors_info'];
 		
 	$projects = uuhp_database_get_user_project($user_id, $select_atts);
-	$output = '<table class="form-table editcomment"><tr><h2>Eployment</h2></tr>';
+	$output = '<table class="form-table editcomment"><tr><h2>Projects</h2></tr>';
 	foreach ( $projects as $project ) {
 			$line = '';
 			foreach ( $emp as $value ) {
@@ -37,7 +37,7 @@ function uuhp_shortcode_function($atts) {
 	return $output;
 }
 
-add_shortcode('uuh-employment', 'uuhp_shortcode_function');
+add_shortcode('uuh-projects', 'uuhp_shortcode_function');
 
 require_once( USOS_HOMEPAGE_PROJECTS_ABS_PATH . '/uuhp.database.php' );
 ?>
