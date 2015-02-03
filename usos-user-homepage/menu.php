@@ -149,7 +149,7 @@ function uuh_menu_page_post_footer() {
 function uuh_menu_page_get_date_input($title, $field_name) {
 	return '<tr valign="top">
 				<td>'.$title.'</td>
-				<td><input dir="ltr" type="date" name="'.$field_name.'" min = "'.date('Y-m-d').'" max="9999-12-31" value="'.date('Y-m-d').'"></td>
+				<td><input dir="ltr" type="date" name="'.$field_name.'" min = "1900-01-01" max="9999-12-31" value="'.date('Y-m-d').'"></td>
 			</tr>';
 }
 
