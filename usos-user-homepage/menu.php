@@ -68,7 +68,6 @@ function uuh_menu_page_print_page($div_title, $atts) {
 				</tr>
 			</table>
 		</div>
-		<input type="submit" class="button-primary" value="<?php _wsl_e("Send aha", 'wordpress-social-login') ?>" />
 	</div>
 	<?php
 }
