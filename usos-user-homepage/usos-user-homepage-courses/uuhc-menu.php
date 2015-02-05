@@ -78,6 +78,8 @@ function uuhc_menu_page_print_courses($message) {
 		'user_id' => wp_get_current_user()->ID,
 		'source' => 'wp'
 	);
+	if ($result['name'] != '')
+		$course_atts['name'] = $result['name'];
 	$select_atts = array(
 		'name' => true,
 		'description' => true,

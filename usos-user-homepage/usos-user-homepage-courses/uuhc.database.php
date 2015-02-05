@@ -3,6 +3,14 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+$uuhc_types = array(
+	'course_id' => 'd',
+	'user_id' => 'd',
+	'name' => 's',
+	'description' => 's',
+	'source' => 's'
+	);
+
 function uuhc_database_install()
 {	
 	global $wpdb;
@@ -26,7 +34,7 @@ function uuhc_database_install()
 
 function uuhc_database_delete_usos_courses($user_id)
 {
-	global $wpdb;
+	global $wpdb, $uuhc_types;
 	$uuhccourses = "{$wpdb->prefix}uuhccourses";
 	
 	$course_atts = array(
@@ -34,9 +42,10 @@ function uuhc_database_delete_usos_courses($user_id)
 		'user_id' => $user_id
 		);
 		
-	$course_where = uuh_database_get_where($course_atts) ;
+	$courses_where = uuh_database_get_where($course_atts, $uuhc_types);
+	$prepare_atts = uuh_database_get_prepare_atts($course_atts);
 	
-	$wpdb->query( "DELETE FROM $uuhccourses $course_where");
+	$wpdb->query($wpdb->prepare("DELETE FROM $uuhccourses $courses_where", $prepare_atts));
 
 }
 
@@ -45,7 +54,7 @@ function uuhc_database_add_course($course)
 	global $wpdb;
 	$uuhccourses = "{$wpdb->prefix}uuhccourses";
 	
-	$wpdb->query( "INSERT INTO $uuhccourses (user_id, name, description, source) VALUES (".$course['user_id'].",'".$course['name']."','".$course['description']."','".$course['source']."')" );
+	$wpdb->query($wpdb->prepare("INSERT INTO $uuhccourses (user_id, name, description, source) VALUES (%d, %s, %s, %s)", $course['user_id'], $course['name'], $course['description'], $course['source']));
 }
 
 function uuhc_database_get_current_courses($user_id, $select_atts = NULL)
@@ -62,21 +71,23 @@ function uuhc_database_get_current_courses($user_id, $select_atts = NULL)
 
 function uuhc_database_delete_courses($course_atts = NULL)
 {
-	global $wpdb;
+	global $wpdb, $uuhc_types;
 	$uuhccourses = "{$wpdb->prefix}uuhccourses";
-	$courses_where = uuh_database_get_where($course_atts);
-	$wpdb->query( "DELETE FROM $uuhccourses $courses_where");
+	$courses_where = uuh_database_get_where($course_atts, $uuhc_types);
+	$prepare_atts = uuh_database_get_prepare_atts($course_atts);
+	$wpdb->query($wpdb->prepare("DELETE FROM $uuhccourses $courses_where", $prepare_atts));
 }
 
 function uuhc_database_get_courses($course_atts = NULL, $select_atts = NULL)
 {
-	global $wpdb;
+	global $wpdb, $uuhc_types;
 	$uuhccourses = "{$wpdb->prefix}uuhccourses";
 	
-	$courses_where = uuh_database_get_where($course_atts) ;
-	$select =  uuh_database_get_select($select_atts);
+	$courses_where = uuh_database_get_where($course_atts, $uuhc_types);
+	$prepare_atts = uuh_database_get_prepare_atts($course_atts);
+	$select = uuh_database_get_select($select_atts);
 	
-	$courses = $wpdb->get_results( "SELECT $select FROM $uuhccourses $courses_where");
+	$courses = $wpdb->get_results($wpdb->prepare("SELECT $select FROM $uuhccourses $courses_where", $prepare_atts));
 	
 	return $courses;
 }

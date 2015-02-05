@@ -3,6 +3,16 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+$uuhg_types = array(
+	'course_id' => 'd',
+	'user_id' => 'd',
+	'name' => 's',
+	'description' => 's',
+	'grade_value' => 's',
+	'grade_description' => 's',
+	'source' => 's'
+	);
+
 function uuhg_database_install()
 {	
 	global $wpdb;
@@ -28,7 +38,7 @@ function uuhg_database_install()
 
 function uuhg_database_delete_usos_grades($user_id)
 {
-	global $wpdb;
+	global $wpdb, $uuhg_types;
 	$uuhggrades = "{$wpdb->prefix}uuhggrades";
 	
 	$course_atts = array(
@@ -36,9 +46,10 @@ function uuhg_database_delete_usos_grades($user_id)
 		'user_id' => $user_id
 		);
 		
-	$course_where = uuh_database_get_where($course_atts) ;
+	$courses_where = uuh_database_get_where($course_atts, $uuhg_types);
+	$prepare_atts = uuh_database_get_prepare_atts($course_atts);
 	
-	$wpdb->query( "DELETE FROM $uuhggrades $course_where");
+	$wpdb->query($wpdb->prepare("DELETE FROM $uuhggrades $courses_where", $prepare_atts));
 
 }
 
@@ -47,7 +58,7 @@ function uuhg_database_add_grades($course)
 	global $wpdb;
 	$uuhggrades = "{$wpdb->prefix}uuhggrades";
 	
-	$wpdb->query( "INSERT INTO $uuhggrades (user_id, name, description, source, grade_value, grade_description) VALUES (".$course['user_id'].",'".$course['name']."','".$course['description']."','".$course['source']."','".$course['grade_value']."','".$course['grade_description']."')" );
+	$wpdb->query($wpdb->prepare("INSERT INTO $uuhggrades (user_id, name, description, source, grade_value, grade_description) VALUES (%d, %s, %s, %s, %s, %s)", $course['user_id'], $course['name'], $course['description'], $course['source'], $course['grade_value'], $course['grade_description']));
 }
 
 function uuhg_database_get_current_grades($user_id, $select_atts = NULL)
@@ -64,22 +75,25 @@ function uuhg_database_get_current_grades($user_id, $select_atts = NULL)
 
 function uuhg_database_delete_grades($course_atts = NULL)
 {
-	global $wpdb;
+	global $wpdb, $uuhg_types;
 	$uuhggrades = "{$wpdb->prefix}uuhggrades";
-	$courses_where = uuh_database_get_where($course_atts);
-	$wpdb->query( "DELETE FROM $uuhggrades $courses_where");
+	$courses_where = uuh_database_get_where($course_atts, $uuhg_types);
+	$prepare_atts = uuh_database_get_prepare_atts($course_atts);
+	
+	$wpdb->query($wpdb->prepare("DELETE FROM $uuhggrades $courses_where", $prepare_atts));
 }
 
 
 function uuhg_database_get_grades($course_atts = NULL, $select_atts = NULL)
 {
-	global $wpdb;
+	global $wpdb, $uuhg_types;
 	$uuhggrades = "{$wpdb->prefix}uuhggrades";
 	
-	$courses_where = uuh_database_get_where($course_atts) ;
+	$courses_where = uuh_database_get_where($course_atts, $uuhg_types);
+	$prepare_atts = uuh_database_get_prepare_atts($course_atts);
 	$select =  uuh_database_get_select($select_atts);
 	
-	$courses = $wpdb->get_results( "SELECT $select FROM $uuhggrades $courses_where");
+	$courses = $wpdb->get_results($wpdb->prepare("SELECT $select FROM $uuhggrades $courses_where", $prepare_atts));
 	
 	return $courses;
 }

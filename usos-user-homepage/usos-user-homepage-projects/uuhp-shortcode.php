@@ -16,7 +16,7 @@ function uuhp_shortcode_function($atts) {
 		'description' => $atts['description'],
 		'job' => $atts['job'],
 		);
-		
+	
  	$current_user = wp_get_current_user();
  	$user_id = $current_user->ID;
 

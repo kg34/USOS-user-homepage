@@ -107,7 +107,9 @@ function uuhp_menu_page_delete_project() {
 	$project_atts = array(
 		'user_id' => wp_get_current_user()->ID,
 	);
-	uuhp_database_delete_project($course_atts);
+	if ( isset ( $_GET['name'] ) and esc_html( $_GET['name'] ) != '')
+		$project_atts['name'] = esc_html( $_GET['name'] );
+	uuhp_database_delete_project($project_atts);
 }
 
 function uuhp_menu_page_find_project() {

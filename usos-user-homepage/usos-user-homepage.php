@@ -20,12 +20,12 @@ function uuh_activate(){
 
 /**
  * Attempt to install UUH upon activation
- * Create uhs tables
+ * Create uuh tables
  */ 
 
 defined( 'USOS_USER_HOMEPAGE_ABS_PATH' )
 	|| define( 'USOS_USER_HOMEPAGE_ABS_PATH', WP_PLUGIN_DIR . '/usos-user-homepage' );
-require_once( USOS_USER_HOMEPAGE_ABS_PATH . '/includes/settings/uuh.database.php' ); // Install/Uninstall UUH database tables
+require_once( USOS_USER_HOMEPAGE_ABS_PATH . '/includes/settings/uuh.database.php' );
 
 require_once( USOS_USER_HOMEPAGE_ABS_PATH . '/usos-user-homepage-schedule/usos-user-homepage-schedule.php' );
 require_once( USOS_USER_HOMEPAGE_ABS_PATH . '/usos-user-homepage-courses/usos-user-homepage-courses.php' );	
@@ -37,7 +37,6 @@ register_activation_hook( __FILE__, 'uuh_activate' );
 
 function uuh_install()
 {
-	uuh_database_install();
 	uuhs_install();
 	uuhc_install();
 	uuhg_install();
@@ -56,7 +55,7 @@ function uuh_get_usos_data($user_login, $user)
 	if( ! class_exists( 'Hybrid_Auth', false ) ) {
 		require_once WP_PLUGIN_DIR . "/wordpress-social-login/hybridauth/Hybrid/Auth.php";
 	}
-	$config = wsl_process_login_build_provider_config( "Usosweb");
+	$config = wsl_process_login_build_provider_config("Usosweb");
 	try {
 		Hybrid_Auth::initialize( $config );
 		if( ! Hybrid_Auth::storage()->get( "hauth_session.Usosweb.is_logged_in" ) ){
@@ -71,6 +70,7 @@ function uuh_get_usos_data($user_login, $user)
 	catch( Exception $e ) {
 		return "Ooophs, we got an error: " . $e->getMessage();
 	}
+	
 	uuhs_get_user_schedule($user_id, $adapter);
 	uuhc_get_user_courses($user_id, $adapter);
 	uuhg_get_user_grades($user_id, $adapter);
@@ -80,7 +80,6 @@ add_action('wp_login', 'uuh_get_usos_data', 12, 2);
 
 function uuh_uninstall()
 {
-	uuh_database_uninstall();
 	uuhs_uninstall();
 	uuhc_uninstall();
 	uuhg_uninstall();

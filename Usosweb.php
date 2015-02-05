@@ -27,7 +27,7 @@ class Hybrid_Providers_Usosweb extends Hybrid_Provider_Model_OAuth1
 	{
 		parent::initialize();
 		
-        $scopes = array('studies', 'grades');
+        	$scopes = array('studies', 'grades');
 
 		// Provider api end-points 
 		$this->api->api_base_url      = "https://usosapps.uw.edu.pl/";

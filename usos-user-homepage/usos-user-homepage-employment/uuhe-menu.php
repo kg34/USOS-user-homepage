@@ -117,7 +117,11 @@ function uuhe_menu_page_delete_employment() {
 	$employment_atts = array(
 		'user_id' => wp_get_current_user()->ID,
 	);
-	uuhe_database_delete_employment($course_atts);
+	if ( isset ( $_GET['company-name'] ) and esc_html( $_GET['company-name'] ) != '')
+		$employment_atts['company_name'] = esc_html( $_GET['company-name'] );
+	if ( isset ( $_GET['job'] ) and esc_html( $_GET['job'] ) != '')
+		$employment_atts['job'] = esc_html( $_GET['job'] );
+	uuhe_database_delete_employment($employment_atts);
 }
 
 function uuhe_menu_page_find_employment() {
